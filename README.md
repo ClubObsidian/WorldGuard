@@ -2,6 +2,25 @@
     <img src="worldguard-logo.svg" alt="WorldGuard" width="400" /> 
 </h1>
 
+Notice
+------
+
+**PLEASE NOTE this is not the official place to get WorldGuard, you can get the official version [here.](https://github.com/EngineHub/WorldGuard)** This version of WorldGuard is maintained for ClubObsidian and it's clients and others affiliated with it, use at your own risk.
+
+Why hard fork
+-------------
+
+While we would love to soft-fork from the main [WorldGuard](https://github.com/EngineHub/WorldGuard) repository soft-forking on Github still does not have proper code searching which is vital when tracking down bugs. If anyone from the WorldGuard team or anyone otherwise wants to submit changes please ask and we will gladly merge any changes upstream.
+
+
+Patches
+-------
+
+* Built-in support for [foundry](https://github.com/clubobsidian/foundry) for permission caching
+
+Information
+-----------
+
 WorldGuard lets you and players guard areas of land against griefers and undesirables, as well as tweak and disable various gameplay features of Minecraft.
 
 * Block creeper and wither block damage, falling damage, etc.
@@ -36,12 +55,3 @@ We happily accept contributions, especially through pull requests on GitHub.
 Please read CONTRIBUTING.md for important guidelines to follow.
 
 Submissions must be licensed under the GNU Lesser General Public License v3.
-
-Links
------
-
-* [Homepage](http://enginehub.org/worldguard)
-* [Discord](https://discord.gg/enginehub)
-* [Issue tracker](https://github.com/EngineHub/WorldGuard/issues)
-* [Continuous integration](http://builds.enginehub.org) [![Build Status](https://ci.enginehub.org/app/rest/builds/buildType:bt11,branch:master/statusIcon.svg)](http://ci.enginehub.org/viewType.html?buildTypeId=bt11&guest=1)
-* [End-user documentation](https://worldguard.enginehub.org/en/latest/)
