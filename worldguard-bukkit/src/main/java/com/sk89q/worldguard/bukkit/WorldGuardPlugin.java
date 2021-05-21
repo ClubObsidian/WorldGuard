@@ -74,7 +74,6 @@ import com.sk89q.worldguard.protection.managers.storage.sql.SQLDriver;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.util.logging.RecordMessagePrefixer;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -211,52 +210,6 @@ public class WorldGuardPlugin extends JavaPlugin {
 
         ((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).setInitialized(true);
 
-        // Enable metrics
-        final Metrics metrics = new Metrics(this, 3283); // bStats plugin id
-        if (metrics.isEnabled() && platform.getGlobalStateManager().extraStats) {
-            setupCustomCharts(metrics);
-        }
-    }
-
-    private void setupCustomCharts(Metrics metrics) {
-        metrics.addCustomChart(new Metrics.SingleLineChart("region_count", () ->
-                platform.getRegionContainer().getLoaded().stream().mapToInt(RegionManager::size).sum()));
-        metrics.addCustomChart(new Metrics.SimplePie("region_driver", () -> {
-            RegionDriver driver = platform.getGlobalStateManager().selectedRegionStoreDriver;
-            return driver instanceof DirectoryYamlDriver ? "yaml" : driver instanceof SQLDriver ? "sql" : "unknown";
-        }));
-        metrics.addCustomChart(new Metrics.DrilldownPie("blacklist", () -> {
-            int empty = 0;
-            Map<String, Integer> blacklistMap = new HashMap<>();
-            Map<String, Integer> whitelistMap = new HashMap<>();
-            for (BukkitWorldConfiguration worldConfig : platform.getGlobalStateManager().getWorldConfigs()) {
-                Blacklist blacklist = worldConfig.getBlacklist();
-                if (blacklist != null && !blacklist.isEmpty()) {
-                    Map<String, Integer> target = blacklist.isWhitelist() ? whitelistMap : blacklistMap;
-                    int floor = ((blacklist.getItemCount() - 1) / 10) * 10;
-                    String range = floor >= 100 ? "101+" : (floor + 1) + " - " + (floor + 10);
-                    target.merge(range, 1, Integer::sum);
-                } else {
-                    empty++;
-                }
-            }
-            Map<String, Map<String, Integer>> blacklistCounts = new HashMap<>();
-            Map<String, Integer> emptyMap = new HashMap<>();
-            emptyMap.put("empty", empty);
-            blacklistCounts.put("empty", emptyMap);
-            blacklistCounts.put("blacklist", blacklistMap);
-            blacklistCounts.put("whitelist", whitelistMap);
-            return blacklistCounts;
-        }));
-        metrics.addCustomChart(new Metrics.SimplePie("chest_protection", () ->
-                "" + platform.getGlobalStateManager().getWorldConfigs().stream().anyMatch(cfg -> cfg.signChestProtection)));
-        metrics.addCustomChart(new Metrics.SimplePie("build_permissions", () ->
-                "" + platform.getGlobalStateManager().getWorldConfigs().stream().anyMatch(cfg -> cfg.buildPermissions)));
-
-        metrics.addCustomChart(new Metrics.SimplePie("custom_flags", () ->
-                "" + (WorldGuard.getInstance().getFlagRegistry().size() > Flags.INBUILT_FLAGS.size())));
-        metrics.addCustomChart(new Metrics.SimplePie("custom_handlers", () ->
-                "" + (WorldGuard.getInstance().getPlatform().getSessionManager().customHandlersRegistered())));
     }
 
     @Override
