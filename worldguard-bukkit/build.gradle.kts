@@ -19,6 +19,10 @@ repositories {
         name = "aikar-timings"
         url = uri("http://repo.aikar.co/nexus/content/groups/aikar/")
     }
+    maven {
+        name = "foundry"
+        url = uri("https://jitpack.io/")
+    }
 }
 
 configurations {
@@ -34,6 +38,7 @@ dependencies {
     "implementation"("com.google.guava:guava:${Versions.GUAVA}")
     "implementation"("com.sk89q:commandbook:2.3") { isTransitive = false }
     "shade"("co.aikar:minecraft-timings:1.0.4")
+    "api"("com.github.clubobsidian:foundry:2.0.0") { isTransitive = false }
 }
 
 tasks.named<Upload>("install") {

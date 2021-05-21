@@ -1,6 +1,6 @@
 name: WorldGuard
 main: com.sk89q.worldguard.bukkit.WorldGuardPlugin
 version: "${internalVersion}"
-depend: [WorldEdit]
+depend: [WorldEdit, Foundry]
 softdepend: [CommandBook]
 api-version: 1.16

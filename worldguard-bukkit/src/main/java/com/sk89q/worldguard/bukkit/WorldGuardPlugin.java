@@ -19,6 +19,8 @@
 
 package com.sk89q.worldguard.bukkit;
 
+import com.clubobsidian.foundry.FoundryPlugin;
+import com.clubobsidian.foundry.permission.PermissionManager;
 import com.google.common.collect.ImmutableList;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.CommandException;
@@ -103,6 +105,7 @@ public class WorldGuardPlugin extends JavaPlugin {
     private static BukkitWorldGuardPlatform platform;
     private final CommandsManager<Actor> commands;
     private PlayerMoveListener playerMoveListener;
+    private PermissionManager permissionManager;
 
     /**
      * Construct objects. Actual loading occurs when the plugin is enabled, so
@@ -136,6 +139,7 @@ public class WorldGuardPlugin extends JavaPlugin {
         getDataFolder().mkdirs(); // Need to create the plugins/WorldGuard folder
 
         PermissionsResolverManager.initialize(this);
+        this.permissionManager = FoundryPlugin.get().getPermissionManager();
 
         WorldGuard.getInstance().setPlatform(platform = new BukkitWorldGuardPlatform()); // Initialise WorldGuard
         WorldGuard.getInstance().setup();
@@ -308,7 +312,8 @@ public class WorldGuardPlugin extends JavaPlugin {
         // Invoke the permissions resolver
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            return PermissionsResolverManager.getInstance().hasPermission(player.getWorld().getName(), player, perm);
+            return this.permissionManager.hasPermission(player, perm);
+            //return PermissionsResolverManager.getInstance().hasPermission(player.getWorld().getName(), player, perm);
         }
 
         return false;
